@@ -22,9 +22,9 @@
             },
             "block_order": [
                 "title",
+                "thumbnail",
                 "author",
                 "published_date",
-                "thumbnail",
                 "content"
             ]
         }
