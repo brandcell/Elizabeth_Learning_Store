@@ -1,209 +1,218 @@
 {% assign menu_linklist = linklists[section.settings.menu].links %}
 
 <div x-data="{ mobileOpen:false }" class="relative bg-white">
-    <div class="mx-auto px-4 sm:px-6">
-        <div class="flex justify-between items-center py-6 md:justify-start
-            md:space-x-10">
-            <!-- STORE NAME / STORE LOGO -->
-            <div class="flex justify-start lg:flex-1 truncate">
-                <h1 class="text-xl font-bold truncate">{{ section.settings.mobile_menu_title }}</h1>
-            </div>
-            <!-- STEP 1: CREATE THE HAMBURGER MENU BUTTON -->
-            <div class="-mr-2 -my-2 ml-3 md:hidden">
-                <button x-on:click="mobileOpen = !mobileOpen" type="button"
-                    class="bg-white p-2 inline-flex items-center justify-center focus:outline-none">
-                    {% render "icon-hamburger" %}
+  <div class="mx-auto px-4 sm:px-6">
+    <div
+      class="
+        flex flex-row justify-between items-center py-6 md:justify-start
+        md:space-x-10
+      "
+    >
+      <!-- STORE NAME / STORE LOGO -->
+      <div class="flex justify-start lg:flex-1 truncate">
+        <h1 class="text-xl font-bold truncate">{{ section.settings.mobile_menu_title }}</h1>
+      </div>
+      <!-- STEP 1: CREATE THE HAMBURGER MENU BUTTON -->
+      <div class="-mr-2 -my-2 ml-3 md:hidden">
+        <button
+          x-on:click="mobileOpen = !mobileOpen"
+          type="button"
+          class="bg-white p-2 inline-flex items-center justify-center focus:outline-none"
+        >
+          {% render 'icon-hamburger' %}
+        </button>
+      </div>
+
+      <!-- MOBILE MENU CONTAINER -->
+      <div
+        x-show="mobileOpen"
+        x-transition
+        class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden"
+      >
+        <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+          <div class="p-5 divide-y-2 divide-gray-50">
+            <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
+            <div class="flex items-center justify-between pb-3">
+              <div>
+                <h1 class="text-lg text-gray-500">MENU</h1>
+              </div>
+              <div class="-mr-2">
+                <button
+                  x-on:click="mobileOpen=!mobileOpen"
+                  type="button"
+                  class="bg-white stroke-black rounded-md p-2 text-gray-500"
+                >
+                  {% render 'icon-close' %}
                 </button>
+              </div>
             </div>
 
+            <!-- NAVIGATION LINKS FOR MOBILE MENU -->
+            <div class="pt-3">
+              <nav class="grid gap-y-7">
+                {% for link in menu_linklist %}
+                  {% comment %}
+                    use a unique link handle variable to store true and false
+                  {% endcomment %}
+                  {% assign link_handle = link.handle | replace: '-', '_' %}
+                  {% if link.links != blank %}
+                    <div x-data="{ {{link_handle}}: false }" class="relative">
+                      <button
+                        x-on:click="{{link_handle}} = ! {{link_handle}}"
+                        type="button"
+                        class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full"
+                      >
+                        <div>{{ link.title }}</div>
+                        <div>
+                          <svg
+                            x-show="{{link_handle}}"
+                            x-transition
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            class="w-6 h-6"
+                          >
+                            <path fill-rule="evenodd"
+                                d="M11.47 7.72a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 0 1-1.06-1.06l7.5-7.5Z"
+                                clip-rule="evenodd" />
+                          </svg>
 
-            <!-- MOBILE MENU CONTAINER -->
-            <div x-show="mobileOpen" x-transition
-                class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
-                <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
-                    <div class="p-5 divide-y-2 divide-gray-50">
-
-                        <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
-                        <div class="flex items-center justify-between pb-3">
-                            <div>
-                                <h1 class="text-lg text-gray-500">MENU</h1>
-                            </div>
-                            <div class="-mr-2">
-                                <button x-on:click="mobileOpen=!mobileOpen" type="button"
-                                    class="bg-white stroke-black rounded-md p-2 text-gray-500">
-                                    {% render 'icon-close' %}
-                                </button>
-                            </div>
+                          <svg
+                            x-show="!{{link_handle}}"
+                            x-transition
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-6 h-6 ml-2"
+                          >
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                          </svg>
                         </div>
+                      </button>
 
-                        <!-- NAVIGATION LINKS FOR MOBILE MENU -->
-                        <div class="pt-3">
-                            <nav class="grid gap-y-7">
-
-                                {% for link in menu_linklist %}
-
-                                {% comment %}
-                                use a unique link handle variable to store true and false
-                                {% endcomment %}
-                                {% assign link_handle = link.handle | replace: '-', "_" %}
-                                {% if link.links != blank %}
-
-
-                                <div x-data="{ {{link_handle}}: false }" class="relative">
-                                    <button x-on:click="{{link_handle}} = ! {{link_handle}}" type="button"
-                                        class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full">
-                                        <div>{{link.title}}</div>
-                                        <div>
-
-                                            <svg x-show="{{link_handle}}" x-transition
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                fill="currentColor" class="w-6 h-6">
-                                                <path fill-rule="evenodd"
-                                                    d="M11.47 7.72a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L12 9.31l-6.97 6.97a.75.75 0 0 1-1.06-1.06l7.5-7.5Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-
-
-                                            <svg x-show="!{{link_handle}}" x-transition
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                            </svg>
-
-                                        </div>
-
-                                    </button>
-
-                                    <div x-show="{{link_handle}}" x-transition class="grid gap-y-3 py-3">
-
-                                        {% for sublink in link.links %}
-                                        <a href="{{sublink.url}}"
-                                            class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                                            <span
-                                                class="ml-3 text-base font-medium text-gray-500">{{sublink.title}}</span>
-                                        </a>
-
-                                        {% endfor %}
-
-                                    </div>
-                                </div>
-
-
-                                {% else %}
-                                <a href="#"
-                                    class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                                    {{link.title}}
-                                </a>
-
-
-                                {% endif %}
-
-
-                                {% endfor %}
-
-
-
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- NAVIGATION MENU -->
-            <nav x-data="{ open: false }" class="hidden md:flex space-x-10">
-                {% for link in menu_linklist%}
-                {% if link.links != blank %}
-                <div class="relative">
-                    <button x-on:click="open = ! open" type="button"
-                        class="inline-flex items-center text-base text-gray-500 hover:text-gray-900">
-                        {{link.title}} {% render 'icon-dropdown' %}
-                    </button>
-                    <!-- STEP 1: Place the div under the button tag -->
-
-                    <div x-show="open" x-transition @click.away="open = false"
-                        class="absolute z-10 -ml-5 mt-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-                        <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
-                            <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-
-                                <!-- CREATE THE SUBLINK -->
-                                {% for sublink in link.links %}
-                                <a href="{{sublink.url}}"
-                                    class="-m-3 p-3 flex items start rounded-lg hover:bg-gray-100">
-                                    <div class="ml-4">
-                                        <p class="text-gray-900 text-base font-medium">
-                                            {{sublink.title}}
-                                        </p>
-                                    </div>
-                                </a>
-
-                                {% endfor %}
-
-                            </div>
-                        </div>
+                      <div x-show="{{link_handle}}" x-transition class="grid gap-y-3 py-3">
+                        {% for sublink in link.links %}
+                          <a
+                            href="{{sublink.url}}"
+                            class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                          >
+                            <span
+                              class="ml-3 text-base font-medium text-gray-500"
+                            >
+                              {{- sublink.title -}}
+                            </span>
+                          </a>
+                        {% endfor %}
+                      </div>
                     </div>
 
-                </div>
-
-                {% else %}
-
-                <div class="relative">
-                    <a href=" {{link.url}}" class="text-base text-gray-500 hover:text-gray-900">{{ link.title }}</a>
-                </div>
-
-                {% endif %}
-
-
+                  {% else %}
+                    <a
+                      href="#"
+                      class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    >
+                      {{ link.title }}
+                    </a>
+                  {% endif %}
                 {% endfor %}
-
-
-            </nav>
-
-
-            <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
-                {% comment %}
-                better to use routes rather than links, it is tied to shopify backend
-                {% endcomment %}
-
-                <a href={{routes.cart_url}} class="text-base text-gray-500 hover:text-gray-900">
-                    {% render 'icon-shopping-bag' %}
-
-                </a>
-
-                {% if shop.customer_accounts_enabled %}
-
-                <a href="{{routes.account_login_url}}" class="text-base text-gray-500 hover:text-gray-900">Login</a>
-                <a href="{{routes.account_register_url}}"
-                    class="text-base text-gray-500 hover:text-gray-900">Register</a>
-
-                {% endif %}
-
+              </nav>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- NAVIGATION MENU -->
+      <nav x-data="{ open: false }" class="hidden md:flex space-x-10">
+        {% for link in menu_linklist %}
+          {% if link.links != blank %}
+            <div class="relative">
+              <button
+                x-on:click="open = ! open"
+                type="button"
+                class="inline-flex items-center text-base text-gray-500 hover:text-gray-900"
+              >
+                {{ link.title }}
+                {% render 'icon-dropdown' %}
+              </button>
+              <!-- STEP 1: Place the div under the button tag -->
+
+              <div
+                x-show="open"
+                x-transition
+                @click.away="open = false"
+                class="absolute z-10 -ml-5 mt-5 transform px-2 w-screen max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2"
+              >
+                <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
+                  <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                    <!-- CREATE THE SUBLINK -->
+                    {% for sublink in link.links %}
+                      <a
+                        href="{{sublink.url}}"
+                        class="-m-3 p-3 flex items start rounded-lg hover:bg-gray-100"
+                      >
+                        <div class="ml-4">
+                          <p class="text-gray-900 text-base font-medium">
+                            {{ sublink.title }}
+                          </p>
+                        </div>
+                      </a>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          {% else %}
+            <div class="relative">
+              <a href=" {{link.url}}" class="text-base text-gray-500 hover:text-gray-900">{{ link.title }}</a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+        {% comment %}
+          better to use routes rather than links, it is tied to shopify backend
+        {% endcomment %}
+
+        <a href="{{routes.cart_url}}" class="text-base text-gray-500 hover:text-gray-900">
+          {% render 'icon-shopping-bag' %}
+        </a>
+
+        {% if shop.customer_accounts_enabled %}
+          <a href="{{routes.account_login_url}}" class="text-base text-gray-500 hover:text-gray-900">Login</a>
+          <a
+            href="{{routes.account_register_url}}"
+            class="text-base text-gray-500 hover:text-gray-900"
+            >Register</a
+          >
+        {% endif %}
+      </div>
     </div>
-
+  </div>
 </div>
-
 
 {% schema %}
 {
-"name": "Header",
-"settings": [
-{
-"type": "text",
-"id" : "mobile_menu_title",
-"label": "Title",
-"default": "brians store",
-"info":"Enter your store name"
-},
-{
-"type": "link_list",
-"id" : "menu",
-"label" : "Choose Menu",
-"default" : "main-menu",
-"info" : "Pick a Menu"
-}
-
-]
+  "name": "Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "mobile_menu_title",
+      "label": "Title",
+      "default": "brians store",
+      "info": "Enter your store name"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Choose Menu",
+      "default": "main-menu",
+      "info": "Pick a Menu"
+    }
+  ]
 }
 {% endschema %}
